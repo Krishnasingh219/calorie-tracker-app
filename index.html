@@ -16,15 +16,17 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- Dark Mode Toggle Button -->
-    <button id="dark-mode-toggle" aria-label="Toggle Dark Mode">Dark Mode</button>
-
     <!-- Main Container -->
     <div id="app" class="max-w-lg mx-auto min-h-screen bg-white shadow-lg">
         <!-- Header -->
-        <header class="bg-indigo-600 text-white p-4 text-center rounded-b-xl shadow-md relative">
-            <h1 class="text-2xl font-bold">Calorie Tracker</h1>
-            <p id="current-date" class="text-indigo-200 text-sm"></p>
+        <header class="bg-indigo-600 text-white p-4 flex items-center justify-between rounded-b-xl shadow-md relative">
+            <button id="dark-mode-toggle" aria-label="Toggle Dark Mode" class="flex items-center bg-indigo-700 hover:bg-indigo-800 p-2 rounded-full shadow">
+                <i data-lucide="moon" id="dark-mode-icon" class="w-5 h-5"></i>
+            </button>
+            <div class="text-center flex-grow">
+                <h1 class="text-2xl font-bold">Calorie Tracker</h1>
+                <p id="current-date" class="text-indigo-200 text-sm"></p>
+            </div>
         </header>
         
         <!-- Main Content -->

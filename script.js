@@ -302,25 +302,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Dark Mode Toggle
     const darkModeToggle = getEl('dark-mode-toggle');
+    const darkModeIcon = getEl('dark-mode-icon');
     const body = document.body;
     const savedMode = localStorage.getItem('color-mode');
     
     if (savedMode === 'dark') {
         body.classList.add('dark');
-        darkModeToggle.textContent = 'Light Mode';
+        darkModeIcon.setAttribute('data-lucide', 'sun');
     } else {
-        darkModeToggle.textContent = 'Dark Mode';
+        darkModeIcon.setAttribute('data-lucide', 'moon');
     }
+    lucide.createIcons();
 
     darkModeToggle.addEventListener('click', () => {
         body.classList.toggle('dark');
         if (body.classList.contains('dark')) {
-            darkModeToggle.textContent = 'Light Mode';
+            darkModeIcon.setAttribute('data-lucide', 'sun');
             localStorage.setItem('color-mode', 'dark');
         } else {
-            darkModeToggle.textContent = 'Dark Mode';
+            darkModeIcon.setAttribute('data-lucide', 'moon');
             localStorage.setItem('color-mode', 'light');
         }
+        lucide.createIcons();
     });
 
     const init = () => {
