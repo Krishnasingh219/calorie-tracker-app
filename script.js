@@ -326,6 +326,22 @@ document.addEventListener('DOMContentLoaded', () => {
         lucide.createIcons();
     });
 
+    // Reset Button
+    const resetBtn = getEl('reset-btn');
+    resetBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to reset the tracker? This will clear all data.')) {
+            localStorage.removeItem(getTodayDateString());
+            state.todayData = {
+                meals: [],
+                totals: { calories: 0, carbs: 0, protein: 0, fat: 0 },
+                proteinGoal: 0,
+                calorieGoal: 0
+            };
+            render();
+            updateGoalProgress();
+        }
+    });
+
     const init = () => {
         currentDateEl.textContent = getFormattedDate();
         loadData();
