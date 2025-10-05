@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < 3; i++) {
             try {
                 const systemPrompt = "You are a nutrition calculator. Given a description of a meal, identify the individual food items mentioned and calculate the estimated calories, protein, carbs, and fat for each item, as well as the totals for the entire meal. Respond only with a single, valid JSON object with two keys: 'totals' (an object with 'calories', 'protein', 'carbs', 'fat') and 'foods' (an array of objects, each with 'name', 'calories', 'protein', 'carbs', 'fat'). All numeric values should be rounded to the nearest whole number. Do not include units, notes, or any other text in your response. Example format: {\"totals\": {\"calories\": 500, \"protein\": 30, \"carbs\": 55, \"fat\": 20}, \"foods\": [{\"name\": \"3 eggs\", \"calories\": 210, \"protein\": 18, \"carbs\": 1, \"fat\": 15}, {\"name\": \"40gm oats\", \"calories\": 150, \"protein\": 5, \"carbs\": 27, \"fat\": 3}]}";
-                const apiKey = "";
+                const apiKey = "AIzaSyC9okQwAifMuLO-8xDC_0FH5FMo9elTDU8";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
                 const response = await fetch(apiUrl, {
