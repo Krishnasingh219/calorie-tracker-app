@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Tracker</title>
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Dark Mode Toggle Button -->
+    <button id="dark-mode-toggle" aria-label="Toggle Dark Mode">Dark Mode</button>
+
+    <!-- Main Container -->
+    <div id="app" class="max-w-lg mx-auto min-h-screen bg-white shadow-lg">
+        <!-- Header -->
+        <header class="bg-indigo-600 text-white p-4 text-center rounded-b-xl shadow-md relative">
+            <h1 class="text-2xl font-bold">Calorie Tracker</h1>
+            <p id="current-date" class="text-indigo-200 text-sm"></p>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="p-4 sm:p-6 pb-24">
+            <!-- Daily Summary -->
+            <section id="summary" class="mb-6">
+                <h2 class="text-xl font-semibold mb-3 text-gray-700">Today's Summary</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="summary-card bg-violet-100 text-violet-800">
+                        <p class="text-sm font-medium">Calories</p>
+                        <p id="total-calories" class="text-2xl font-bold">0</p>
+                        <p class="text-xs">kcal</p>
+                    </div>
+                    <div class="summary-card bg-sky-100 text-sky-800">
+                        <p class="text-sm font-medium">Carbs</p>
+                        <p id="total-carbs" class="text-2xl font-bold">0</p>
+                        <p class="text-xs">g</p>
+                    </div>
+                    <div class="summary-card bg-emerald-100 text-emerald-800">
+                        <p class="text-sm font-medium">Protein</p>
+                        <p id="total-protein" class="text-2xl font-bold">0</p>
+                        <p class="text-xs">g</p>
+                    </div>
+                    <div class="summary-card bg-amber-100 text-amber-800">
+                        <p class="text-sm font-medium">Fat</p>
+                        <p id="total-fat" class="text-2xl font-bold">0</p>
+                        <p class="text-xs">g</p>
+                    </div>
+                </div>
+                <!-- Protein Goal Section -->
+                <div class="mt-4">
+                    <label for="protein-goal" class="block text-sm font-medium text-gray-700">Daily Protein Goal (g)</label>
+                    <input type="number" id="protein-goal" min="0" class="goal-input" placeholder="e.g., 150">
+                    <div class="mt-2">
+                        <div class="progress-bar-bg">
+                            <div id="protein-progress" class="bg-emerald-600 h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                        <p class="progress-status" id="protein-status">0 / 0 g</p>
+                    </div>
+                    <div id="badge" class="goal-badge opacity-0">
+                      <span class="bg-yellow-400 text-yellow-800 px-2 py-1 rounded-full text-xs font-semibold inline-block">
+                        Protein Goal Achieved! 🏆
+                      </span>
+                    </div>
+                </div>
+                <!-- Calorie Goal Section -->
+                <div class="mt-6 relative">
+                    <label for="calorie-goal" class="block text-sm font-medium text-gray-700">Daily Calorie Goal (kcal)</label>
+                    <input type="number" id="calorie-goal" min="0" class="goal-input" placeholder="e.g., 2000">
+                    <div class="mt-2">
+                        <div class="progress-bar-bg">
+                            <div id="calorie-progress" class="bg-violet-600 h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                        <p class="progress-status" id="calorie-status">0 / 0 kcal</p>
+                    </div>
+                    <div id="calorie-badge" class="goal-badge opacity-0 mt-6 absolute left-0 -bottom-8 flex items-center">
+                      <span class="bg-purple-400 text-purple-800 px-2 py-1 rounded-full text-xs font-semibold">
+                        Calorie Goal Achieved! 🏆
+                      </span>
+                    </div>
+                </div>
+            </section>
+            <!-- Meals List -->
+            <section id="meals">
+                <h2 class="text-xl font-semibold mb-3 text-gray-700">Meals</h2>
+                <div id="meals-list" class="space-y-4">
+                    <div id="empty-state" class="text-center py-10 px-4">
+                        <p class="text-gray-500">No meals added yet.</p>
+                        <p class="text-gray-400 text-sm">Tap the '+' button to log your first meal.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- Floating Action Button -->
+        <button id="add-meal-btn">
+            <i data-lucide="plus" class="w-8 h-8"></i>
+        </button>
+    </div>
+
+    <!-- Add Meal Modal -->
+    <div id="meal-modal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden opacity-0">
+        <div class="modal-content bg-white rounded-2xl shadow-xl w-full max-w-md p-6 transform -translate-y-10">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-semibold text-gray-800">Add Meal</h3>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <form id="meal-form">
+                <div class="space-y-4">
+                    <div>
+                        <label for="meal-name" class="block text-sm font-medium text-gray-700">Food Name</label>
+                        <input type="text" id="meal-name" class="form-input" required placeholder="e.g., Morning Oatmeal">
+                    </div>
+                    <div>
+                        <label for="meal-type" class="block text-sm font-medium text-gray-700">Meal Type</label>
+                        <select id="meal-type" class="form-input">
+                            <option>Breakfast</option>
+                            <option>Lunch</option>
+                            <option>Dinner</option>
+                            <option>Snack</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="meal-description" class="block text-sm font-medium text-gray-700">Describe your meal</label>
+                        <textarea id="meal-description" rows="3" class="form-input" placeholder="e.g., 3 eggs, 40gm oats with 140ml milk"></textarea>
+                    </div>
+                    <div class="my-2">
+                        <button type="button" id="calculate-btn" class="w-full" disabled>Calculate Nutrition</button>
+                        <div id="loader" class="hidden my-2 text-center">
+                            <svg class="animate-spin h-6 w-6 text-indigo-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <p class="text-sm text-gray-500 mt-1">Calculating...</p>
+                        </div>
+                        <div id="error-message" class="hidden text-red-600 text-sm mt-2 text-center"></div>
+                    </div>
+                    <div id="results-container" class="hidden opacity-0 transition-opacity duration-300">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="calories" class="block text-sm font-medium text-gray-700">Calories (kcal)</label>
+                                <input type="number" id="calories" min="0" class="result-input" readonly>
+                            </div>
+                            <div>
+                                <label for="protein" class="block text-sm font-medium text-gray-700">Protein (g)</label>
+                                <input type="number" id="protein" min="0" class="result-input" readonly>
+                            </div>
+                            <div>
+                                <label for="carbs" class="block text-sm font-medium text-gray-700">Carbs (g)</label>
+                                <input type="number" id="carbs" min="0" class="result-input" readonly>
+                            </div>
+                            <div>
+                                <label for="fat" class="block text-sm font-medium text-gray-700">Fat (g)</label>
+                                <input type="number" id="fat" min="0" class="result-input" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end space-x-3">
+                    <button type="button" id="cancel-btn" class="btn-secondary">Cancel</button>
+                    <button type="submit" id="submit-meal-btn" class="btn-primary" disabled>Add Meal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js" defer></script>
+</body>
+</html>
